@@ -1997,7 +1997,6 @@ class Xuez(Coin):
 class Bitsend(Coin):
     NAME = "Bitsend"
     SHORTNAME = "BSD"
-    NET = "mainnet"
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
 
