@@ -2003,7 +2003,7 @@ class Bitsend(Coin):
     XPUB_VERBYTES = bytes.fromhex("0488B21E")
     XPRV_VERBYTES = bytes.fromhex("0488ADE4")
     P2PKH_VERBYTE = bytes.fromhex("66")
-    P2SH_VERBYTES = [bytes.fromhex("5")]
+    P2SH_VERBYTES = [bytes.fromhex("05")]
     WIF_BYTE = bytes.fromhex("cc")
     GENESIS_HASH = ('0000012e1b8843ac9ce8c18603658eaf'
                     '8895f99d3f5e7e1b7b1686f35e3c087a')
