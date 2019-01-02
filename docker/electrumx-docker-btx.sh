@@ -52,13 +52,14 @@ sed -i "s/^\(WEB=\).*/WEB=\"$BTX_WEB\"/g" btx-docker.sh
 sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=\"$BTX_BOOTSTRAP\"/g" btx-docker.sh
 chmod +x ./btx-docker.sh
 ./btx-docker.sh
-#rm ./btx-docker.sh
+rm ./btx-docker.sh
 
 
 #
 # Installation of ElectrumX Server
 #
 printf "\n\nDOCKER SETUP FOR ${BTX_COL}BITCORE (BTX)${NO_COL} ELECTRUMX SERVER\n"
+sleep 5
 
 
 #

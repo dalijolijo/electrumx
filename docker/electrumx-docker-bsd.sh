@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -u
 
 # Copyright (c) 2018 The Bitsend BSD Core Developers
 # ElectrumX Server + Bitsend Docker Solution
@@ -55,12 +55,13 @@ sed -i "s/^\(WEB=\).*/WEB=\"$BSD_WEB\"/g" bsd-docker.sh
 sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=\"$BSD_BOOTSTRAP\"/g" bsd-docker.sh
 chmod +x ./bsd-docker.sh
 ./bsd-docker.sh
-#rm ./bsd-docker.sh
+rm ./bsd-docker.sh
 
 #
 # Installation of ElectrumX Server
 #
 printf "\n\nDOCKER SETUP FOR ${BSD_COL}BITSEND (BSD)${NO_COL} ELECTRUMX SERVER\n"
+sleep 5
 
 
 #
