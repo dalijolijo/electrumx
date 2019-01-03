@@ -36,7 +36,7 @@ ENV HOST ""
 # Running updates and installing required packages
 RUN apk add --no-cache git build-base openssl curl bash vim && \
     apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
-    pip install aiohttp pylru plyvel
+    pip install aiohttp pylru plyvel xevan-hash x11_hash
 
 # Install ElectrumX Server
 RUN git clone -b upgrade https://github.com/dalijolijo/electrumx.git && \

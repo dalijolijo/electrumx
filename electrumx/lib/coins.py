@@ -127,7 +127,6 @@ class Coin(object):
         if header_hex_hash != cls.GENESIS_HASH:
             raise CoinError('genesis block has hash {} expected {}'
                             .format(header_hex_hash, cls.GENESIS_HASH))
-
         return header + bytes(1)
 
     @classmethod
@@ -2007,18 +2006,46 @@ class Bitsend(Coin):
     WIF_BYTE = bytes.fromhex("cc")
     GENESIS_HASH = ('0000012e1b8843ac9ce8c18603658eaf'
                     '8895f99d3f5e7e1b7b1686f35e3c087a')
-    TX_COUNT = 30000
-    TX_COUNT_HEIGHT = 15000
-    TX_PER_BLOCK = 1
+    TX_COUNT = 974672
+    TX_COUNT_HEIGHT = 586022
+    TX_PER_BLOCK = 2
     RPC_PORT = 8800
     REORG_LIMIT = 1000
-    BASIC_HEADER_SIZE = 112
+    DESERIALIZER = lib_tx.DeserializerSegWit
+    XEVAN_TIMESTAMP = 1477958400
     PEERS = [
         'ele1.bitsend.cc s t',
         'ele2.bitsend.cc s t',
         'ele3.bitsend.cc s t',
         'ele4.bitsend.cc s t'
     ]
+
+    @classmethod
+    def header_hash(cls, header):
+        '''Given a header return the hash.'''
+        from datetime import datetime
+        timestamp, = util.unpack_le_uint32_from(header, 68)
+        t = datetime.fromtimestamp(timestamp).strftime("%A, %B %d, %Y %I:%M:%S")
+        version, = util.unpack_le_uint32_from(header, 0)
+
+        if timestamp > cls.XEVAN_TIMESTAMP:
+            import xevan_hash
+            return xevan_hash.getPoWHash(header)
+        else:
+            import x11_hash
+            return x11_hash.getPoWHash(header)
+
+    @classmethod
+    def genesis_block(cls, block):
+        '''Check the Genesis block is the right one for this coin.
+        Return the block less its unspendable coinbase.
+        '''
+        header = cls.block_header(block, 0)
+        header_hex_hash = hash_to_hex_str(cls.header_hash(header))
+        if header_hex_hash != cls.GENESIS_HASH:
+            raise CoinError('genesis block has hash {} expected {}'
+                            .format(header_hex_hash, cls.GENESIS_HASH))
+        return header + bytes(1)
 
 
 class Pac(Coin):
