@@ -23,10 +23,11 @@ BSD_CONFIG_PATH="/home/bitsend/.bitsend"
 BSD_CONFIG="/home/bitsend/.bitsend/bitsend.conf"
 BSD_CONTAINER_NAME="bsd-masternode"
 BSD_MASTERNODE="0"
+BSD_TXINDEX="1"
 BSD_DEFAULT_PORT="8886"
 BSD_RPC_PORT="8800"
 BSD_TOR_PORT="9051"
-BSD_WEB="www.mybitsend.com" # without "https://" and without the last "/" (only HTTPS accepted)
+BSD_WEB="www.mybitsend.com/bsdtx" # without "https://" and without the last "/" (only HTTPS accepted)
 BSD_BOOTSTRAP="bootstrap.tar.gz"
 
 
@@ -48,11 +49,13 @@ sed -i "s/^\(DOCKER_REPO=\).*/DOCKER_REPO=\"$DOCKER_REPO\"/g" bsd-docker.sh
 sed -i "s|^\(CONFIG=\).*|CONFIG=\"$BSD_CONFIG\"|g" bsd-docker.sh
 sed -i "s/^\(CONTAINER_NAME=\).*/CONTAINER_NAME=\"$BSD_CONTAINER_NAME\"/g" bsd-docker.sh
 sed -i "s/^\(MASTERNODE=\).*/MASTERNODE=\"$BSD_MASTERNODE\"/g" bsd-docker.sh
+sed -i "s/^\(TXINDEX=\).*/TXINDEX=\"$BSD_TXINDEX\"/g" bsd-docker.sh
 sed -i "s/^\(DEFAULT_PORT=\).*/DEFAULT_PORT=\"$BSD_DEFAULT_PORT\"/g" bsd-docker.sh
 sed -i "s/^\(RPC_PORT=\).*/RPC_PORT=\"$BSD_RPC_PORT\"/g" bsd-docker.sh
 sed -i "s/^\(TOR_PORT=\).*/TOR_PORT=\"$BSD_TOR_PORT\"/g" bsd-docker.sh
-sed -i "s/^\(WEB=\).*/WEB=\"$BSD_WEB\"/g" bsd-docker.sh
+sed -i "s|^\(WEB=\).*|WEB=\"$BSD_WEB\"|g" bsd-docker.sh
 sed -i "s/^\(BOOTSTRAP=\).*/BOOTSTRAP=\"$BSD_BOOTSTRAP\"/g" bsd-docker.sh
+sed -i "s/^\(ELECTRUM=\).*/ELECTRUM=\"y\"/g" bsd-docker.sh
 chmod +x ./bsd-docker.sh
 ./bsd-docker.sh
 rm ./bsd-docker.sh
