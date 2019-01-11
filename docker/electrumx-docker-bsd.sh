@@ -149,6 +149,7 @@ sed -i "s|^\(rpcallowip=\).*|rpcallowip=${ELX_RPC_HOST}|g" ${BSD_CONFIG}
 #
 printf "\nConnect ElectrumX Server with Masternode"
 printf "\n----------------------------------------\n"
+
 # Wait until Daemon bitsendd is running
 function is_running {
    running=$(docker exec "$1" supervisorctl status | grep "RUNNING")
@@ -163,8 +164,25 @@ function is_running {
 }
 printf "Please wait..."
 while is_running ${BSD_CONTAINER_NAME} ; do true; done
-docker exec ${BSD_CONTAINER_NAME} supervisorctl restart bitsendd
-sleep 5
+docker exec ${BSD_CONTAINER_NAME} supervisorctl stop bitsendd
+rm ${BSD_CONFIG_PATH}/.lock
+
+# Wait until Daemon bitsendd is running
+function is_started {
+   started=$(docker exec "$1" supervisorctl status | grep "RUNNING")
+   if [ -z "$started" ]; then
+      printf "."
+      docker exec ${BSD_CONTAINER_NAME} supervisorctl restart bitsendd
+      sleep 40
+      true;
+   else
+      printf "\n"
+      false;
+   fi
+   return $?;
+}
+printf "Please wait..."
+while is_started ${BSD_CONTAINER_NAME} ; do true; done
 docker exec ${BSD_CONTAINER_NAME} supervisorctl status
 
 
