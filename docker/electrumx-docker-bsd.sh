@@ -140,6 +140,7 @@ docker run \
 #
 sleep 5
 ELX_RPC_HOST="$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${ELECTRUMX_CONTAINER_NAME})"
+RPC_HOST=${ELX_RPC_HOST}
 printf "DEBUG ELX_RPC_HOST: ${ELX_RPC_HOST}\n"
 sed -i "s|^\(rpcallowip=\).*|rpcallowip=${ELX_RPC_HOST}|g" ${BSD_CONFIG}
 
