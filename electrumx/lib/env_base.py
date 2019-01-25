@@ -95,5 +95,5 @@ class EnvBase(object):
         # An empty result indicates all interfaces, which we do not
         # permitted for an RPC server.
         if for_rpc and not result:
-            result = 'localhost'
+            result = ''
         return result
