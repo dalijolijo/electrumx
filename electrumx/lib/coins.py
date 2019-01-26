@@ -2017,7 +2017,8 @@ class Bitsend(Coin):
         'ele1.bitsend.cc s t',
         'ele2.bitsend.cc s t',
         'ele3.bitsend.cc s t',
-        'ele4.bitsend.cc s t'
+        'ele4.bitsend.cc s t',
+        '51.15.121.233 s t'
     ]
 
     @classmethod
