@@ -2029,13 +2029,10 @@ class Bitsend(Coin):
         print(f'timestamp: {t}')
         version, = util.unpack_le_uint32_from(header, 0)
         i = 0
-        while version > 3:
+        while i < 68 :
             version, = util.unpack_le_uint32_from(header, i)
-            print(f'version: {version}')
+            print(f'version {i}: {version}')
             i = i + 1
-        print(f'timestamp: {t}')
-        print(version)
-
         if timestamp > cls.XEVAN_TIMESTAMP:
             import xevan_hash
             return xevan_hash.getPoWHash(header)
