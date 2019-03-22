@@ -2028,8 +2028,9 @@ class Bitsend(Coin):
         t = datetime.fromtimestamp(timestamp).strftime("%A, %B %d, %Y %I:%M:%S")
         print(f'timestamp: {t}')
         version, = util.unpack_le_uint32_from(header, 0)
+        print(f'version {0}: {version}')
         i = 0
-        while i < 68 :
+        while i < 80 :
             version, = util.unpack_le_uint32_from(header, i)
             print(f'version {i}: {version}')
             i = i + 1
