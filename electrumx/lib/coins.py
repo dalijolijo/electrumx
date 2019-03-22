@@ -1999,8 +1999,8 @@ class Bitsend(Coin):
     NAME = "Bitsend"
     SHORTNAME = "BSD"
     NET = "mainnet"
-    XPUB_VERBYTES = bytes.fromhex("0488B21E")
-    XPRV_VERBYTES = bytes.fromhex("0488ADE4")
+    #XPUB_VERBYTES = bytes.fromhex("0488B21E")
+    #XPRV_VERBYTES = bytes.fromhex("0488ADE4")
     P2PKH_VERBYTE = bytes.fromhex("66")
     P2SH_VERBYTES = [bytes.fromhex("05")]
     WIF_BYTE = bytes.fromhex("cc")
@@ -2010,15 +2010,14 @@ class Bitsend(Coin):
     TX_COUNT_HEIGHT = 586022
     TX_PER_BLOCK = 2
     RPC_PORT = 8800
-    REORG_LIMIT = 1000
+    #REORG_LIMIT = 1000
     DESERIALIZER = lib_tx.DeserializerSegWit
     XEVAN_TIMESTAMP = 1477958400
     PEERS = [
         'ele1.bitsend.cc s t',
         'ele2.bitsend.cc s t',
         'ele3.bitsend.cc s t',
-        'ele4.bitsend.cc s t',
-        '51.15.121.233 s t'
+        'ele4.bitsend.cc s t'
     ]
 
     @classmethod
@@ -2028,12 +2027,15 @@ class Bitsend(Coin):
         timestamp, = util.unpack_le_uint32_from(header, 68)
         t = datetime.fromtimestamp(timestamp).strftime("%A, %B %d, %Y %I:%M:%S")
         version, = util.unpack_le_uint32_from(header, 0)
+        print(version)
 
         if timestamp > cls.XEVAN_TIMESTAMP:
             import xevan_hash
+            print("XEVAN")
             return xevan_hash.getPoWHash(header)
         else:
             import x11_hash
+            print("X11")
             return x11_hash.getPoWHash(header)
 
     @classmethod
