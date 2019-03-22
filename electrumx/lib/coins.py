@@ -2031,7 +2031,7 @@ class Bitsend(Coin):
         print(f'version {0}: {version}')
         i = 0
         if version > 3:
-            while i < cls.BASIC_HEADER_SIZE:
+            while i < len(header):
                 version, = util.unpack_le_uint32_from(header, i)
                 if version < 4 :
                     print(f'version {i}: {version}')  
