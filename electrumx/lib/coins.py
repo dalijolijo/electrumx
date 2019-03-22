@@ -2031,11 +2031,11 @@ class Bitsend(Coin):
         #print(f'version {0}: {version}')
         i = 0
         if version > 3:
-            while i < len(header) - 4:
+            while i < len(header) - 3:
                 version, = util.unpack_le_uint32_from(header, i)
                 if version < 4:
-                    print(f'timestamp: {t}')
-                    print(f'version {i}: {version}') 
+                    print(f'timestamp: {t} with...')
+                    print(f' ... version {i}: {version}') 
                 i = i + 1
         if timestamp > cls.XEVAN_TIMESTAMP:
             import xevan_hash
