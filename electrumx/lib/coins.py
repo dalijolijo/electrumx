@@ -2026,16 +2026,15 @@ class Bitsend(Coin):
         from datetime import datetime
         timestamp, = util.unpack_le_uint32_from(header, 68)
         t = datetime.fromtimestamp(timestamp).strftime("%A, %B %d, %Y %I:%M:%S")
-        #print(f'timestamp: {t}')
         version, = util.unpack_le_uint32_from(header, 0)
-        #print(f'version {0}: {version}')
         i = 0
         if version > 3:
-            while i < len(header) - 3:
+            while i < len(header) - 2:
+                print(f'version 0: {0}: {version}')
                 version, = util.unpack_le_uint32_from(header, i)
                 if version < 4:
                     print(f'timestamp: {t} with...')
-                    print(f' ... version {i}: {version}') 
+                    print(f' ... version {i: {version}') 
                 i = i + 1
         if timestamp > cls.XEVAN_TIMESTAMP:
             import xevan_hash
