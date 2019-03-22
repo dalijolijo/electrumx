@@ -2010,7 +2010,7 @@ class Bitsend(Coin):
     TX_COUNT_HEIGHT = 586022
     TX_PER_BLOCK = 2
     RPC_PORT = 8800
-    REORG_LIMIT = 1000
+    #REORG_LIMIT = 1000
     DESERIALIZER = lib_tx.DeserializerSegWit
     XEVAN_TIMESTAMP = 1477958400
     PEERS = [
@@ -2032,7 +2032,7 @@ class Bitsend(Coin):
         while version > 3:
             version, = util.unpack_le_uint32_from(header, i)
             print(f'version: {version}')
-            i++
+            i = i + 1
         print(f'timestamp: {t}')
         print(version)
 
