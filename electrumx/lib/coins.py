@@ -1999,8 +1999,8 @@ class Bitsend(Coin):
     NAME = "Bitsend"
     SHORTNAME = "BSD"
     NET = "mainnet"
-    #XPUB_VERBYTES = bytes.fromhex("0488B21E")
-    #XPRV_VERBYTES = bytes.fromhex("0488ADE4")
+    XPUB_VERBYTES = bytes.fromhex("0488B21E")
+    XPRV_VERBYTES = bytes.fromhex("0488ADE4")
     P2PKH_VERBYTE = bytes.fromhex("66")
     P2SH_VERBYTES = [bytes.fromhex("05")]
     WIF_BYTE = bytes.fromhex("cc")
@@ -2010,14 +2010,10 @@ class Bitsend(Coin):
     TX_COUNT_HEIGHT = 586022
     TX_PER_BLOCK = 2
     RPC_PORT = 8800
-    #REORG_LIMIT = 1000
+    REORG_LIMIT = 1000
     DESERIALIZER = lib_tx.DeserializerSegWit
     XEVAN_TIMESTAMP = 1477958400
     PEERS = [
-        'ele1.bitsend.cc s t',
-        'ele2.bitsend.cc s t',
-        'ele3.bitsend.cc s t',
-        'ele4.bitsend.cc s t'
     ]
 
     @classmethod
@@ -2030,7 +2026,8 @@ class Bitsend(Coin):
         i = 0
         if version > 3:
             while i < len(header) - 2:
-                print(f'version 0: {version}')
+                print(f'timestamp: {t} with...')
+                print(f' ... version 0: {version}')
                 version, = util.unpack_le_uint32_from(header, i)
                 if version < 4:
                     print(f'timestamp: {t} with...')
@@ -2050,6 +2047,8 @@ class Bitsend(Coin):
         '''
         header = cls.block_header(block, 0)
         header_hex_hash = hash_to_hex_str(cls.header_hash(header))
+        if header_hex_hash == cls.GENESIS_HASH:
+            print(f'genesis block has hash {header_hex_hash} expected {cls.GENESIS_HASH}')
         if header_hex_hash != cls.GENESIS_HASH:
             raise CoinError('genesis block has hash {} expected {}'
                             .format(header_hex_hash, cls.GENESIS_HASH))
