@@ -2025,7 +2025,7 @@ class Bitsend(Coin):
         version, = util.unpack_le_uint32_from(header, 0)
         i = 0
         if version > 3:
-            while i < len(header) - 2:
+            while i < len(header) - 3:
                 print(f'timestamp: {t} with...')
                 print(f' ... version 0: {version}')
                 version, = util.unpack_le_uint32_from(header, i)
