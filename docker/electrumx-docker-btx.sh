@@ -125,6 +125,20 @@ docker rm ${ELECTRUMX_CONTAINER_NAME} >/dev/null
 # Hint: Only SSL Port 50002 will be open
 COIN="Bitcore"
 if [ $FLUSH_DB == "yes" ];then
+  wget https://raw.githubusercontent.com/${DOCKER_REPO}/electrumx/upgrade/electrumx_compact_history -O ${BTX_CONFIG_PATH}/electrumx_compact_history
+  echo "
+  docker run \
+    -v ${BTX_CONFIG_PATH}:/data \
+    -e DAEMON_URL=${BTX_RPC_URL} \
+    -e COIN=${COIN} \
+    -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
+    -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
+    --name ${ELECTRUMX_CONTAINER_NAME} \
+    -it \
+    --rm \
+    ${DOCKER_REPO}/electrumx \
+    python3 electrumx_compact_history
+  "
   docker run \
     -v ${BTX_CONFIG_PATH}:/data \
     -e DAEMON_URL=${BTX_RPC_URL} \

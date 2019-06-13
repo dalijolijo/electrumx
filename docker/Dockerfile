@@ -41,8 +41,7 @@ RUN apk add --no-cache git build-base openssl curl bash vim && \
 # Install ElectrumX Server
 RUN git clone -b upgrade https://github.com/dalijolijo/electrumx.git && \
     cd electrumx && \
-    cp ./electrumx_server /usr/local/bin/electrumx_server && \
-    cp ./electrumx_server /usr/local/bin/electrumx_compact_history && \
+    cp /data/electrumx/electrumx_server /usr/local/bin/electrumx_server && \
     python setup.py install && \
     apk del git build-base && \
     rm -rf /tmp/*
