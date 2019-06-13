@@ -7,7 +7,7 @@
 # See BUILD_README.md for further steps.
 
 # Use an official Python runtime as a parent image
-FROM python:3.6-alpine3.6
+FROM python:3.6-alpine3.9
 LABEL maintainer="The Bitcore BTX Core Developers"
 LABEL version="0.1"
 
@@ -35,7 +35,7 @@ ENV HOST ""
 
 # Running updates and installing required packages
 RUN apk add --no-cache git build-base openssl curl bash vim && \
-    apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/testing leveldb-dev && \
+    apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community leveldb-dev && \
     pip install aiohttp pylru plyvel xevan-hash x11_hash
 
 # Install ElectrumX Server
