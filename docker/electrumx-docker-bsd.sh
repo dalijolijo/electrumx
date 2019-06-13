@@ -7,6 +7,12 @@ set -u
 
 
 #
+# Run script to flush DB (flush_count overflow)
+#
+FLUSH_DB="yes" #yes or no
+
+
+#
 # Define Variables for ElectrumX Server
 #
 ELECTRUMX_CONTAINER_NAME="electrumx"
@@ -84,11 +90,11 @@ BSD_RPC_URL="http://${BSD_RPC_USER}:${BSD_RPC_PWD}@${BSD_RPC_HOST}:${BSD_RPC_POR
 #
 printf "\nDownload needed Helper-Scripts"
 printf "\n------------------------------\n"
-wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/check_os.sh -O check_os.sh
+wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/upgrade/docker/check_os.sh -O check_os.sh
 chmod +x ./check_os.sh
 source ./check_os.sh
 rm ./check_os.sh
-wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/firewall_config.sh -O firewall_config.sh
+wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/upgrade/docker/firewall_config.sh -O firewall_config.sh
 chmod +x ./firewall_config.sh
 source ./firewall_config.sh ${ELECTRUMX_SSL_PORT} ${ELECTRUMX_RPC_PORT}
 rm ./firewall_config.sh
@@ -123,16 +129,30 @@ docker rm ${ELECTRUMX_CONTAINER_NAME} >/dev/null
 #
 # Hint: Only SSL Port 50002 will be open
 COIN="Bitsend"
-docker run \
-  -v ${BSD_CONFIG_PATH}:/data \
-  -e DAEMON_URL=${BSD_RPC_URL} \
-  -e COIN=${COIN} \
-  -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
-  -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
-  --name ${ELECTRUMX_CONTAINER_NAME} \
-  -d \
-  --rm \
-  ${DOCKER_REPO}/electrumx
+if [ $FLUSH_DB == "yes" ];then
+  docker run \
+    -v ${BTX_CONFIG_PATH}:/data \
+    -e DAEMON_URL=${BTX_RPC_URL} \
+    -e COIN=${COIN} \
+    -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
+    -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
+    --name ${ELECTRUMX_CONTAINER_NAME} \
+    -it \
+    --rm \
+    ${DOCKER_REPO}/electrumx \
+    python3 electrumx_compact_history
+else
+  docker run \
+    -v ${BSD_CONFIG_PATH}:/data \
+    -e DAEMON_URL=${BSD_RPC_URL} \
+    -e COIN=${COIN} \
+    -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
+    -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
+    --name ${ELECTRUMX_CONTAINER_NAME} \
+    -d \
+    --rm \
+    ${DOCKER_REPO}/electrumx
+fi
 
 
 #

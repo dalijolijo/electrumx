@@ -5,6 +5,11 @@ set -u
 # ElectrumX Server + Bitcore RPC Server Docker Solution
 # Script elexctrumx.sh
 
+#
+# Run script to flush DB (flush_count overflow)
+#
+FLUSH_DB="yes" #yes or no
+ 
 
 #
 # Define Variables for ElectrumX Server
@@ -79,11 +84,11 @@ BTX_RPC_URL="http://${BTX_RPC_USER}:${BTX_RPC_PWD}@${BTX_RPC_HOST}:${BTX_RPC_POR
 #
 printf "\nDownload needed Helper-Scripts"
 printf "\n------------------------------\n"
-wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/check_os.sh -O check_os.sh
+wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/upgrade/docker/check_os.sh -O check_os.sh
 chmod +x ./check_os.sh
 source ./check_os.sh
 rm ./check_os.sh
-wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/master/docker/firewall_config.sh -O firewall_config.sh
+wget https://raw.githubusercontent.com/${GIT_REPO}/electrumx/upgrade/docker/firewall_config.sh -O firewall_config.sh
 chmod +x ./firewall_config.sh
 source ./firewall_config.sh ${ELECTRUMX_SSL_PORT} ${ELECTRUMX_RPC_PORT}
 rm ./firewall_config.sh
@@ -111,7 +116,7 @@ if [ $? -eq 0 ];then
     fi
 fi
 docker rm ${ELECTRUMX_CONTAINER_NAME} >/dev/null
-docker pull ${DOCKER_REPO}/electrumx
+#docker pull ${DOCKER_REPO}/electrumx
 
 
 #
@@ -119,16 +124,30 @@ docker pull ${DOCKER_REPO}/electrumx
 #
 # Hint: Only SSL Port 50002 will be open
 COIN="Bitcore"
-docker run \
-  -v ${BTX_CONFIG_PATH}:/data \
-  -e DAEMON_URL=${BTX_RPC_URL} \
-  -e COIN=${COIN} \
-  -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
-  -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
-  --name ${ELECTRUMX_CONTAINER_NAME} \
-  -d \
-  --rm \
-  ${DOCKER_REPO}/electrumx
+if [ $FLUSH_DB == "yes" ];then
+  docker run \
+    -v ${BTX_CONFIG_PATH}:/data \
+    -e DAEMON_URL=${BTX_RPC_URL} \
+    -e COIN=${COIN} \
+    -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
+    -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
+    --name ${ELECTRUMX_CONTAINER_NAME} \
+    -it \
+    --rm \
+    ${DOCKER_REPO}/electrumx \
+    python3 electrumx_compact_history
+else
+  docker run \
+    -v ${BTX_CONFIG_PATH}:/data \
+    -e DAEMON_URL=${BTX_RPC_URL} \
+    -e COIN=${COIN} \
+    -p ${ELECTRUMX_SSL_PORT}:${ELECTRUMX_SSL_PORT} \
+    -p ${ELECTRUMX_RPC_PORT}:${ELECTRUMX_RPC_PORT} \
+    --name ${ELECTRUMX_CONTAINER_NAME} \
+    -d \
+    --rm \
+    ${DOCKER_REPO}/electrumx
+fi
 
 
 #

@@ -33,6 +33,14 @@ chmod +x electrumx-docker-btx.sh
 ./electrumx-docker-btx.sh
 ```
 
+## Run script to flush DB (flush_count overflow)
+Edit electrumx-docker-btx.sh and set `FLUSH_DB` to `yes` before running it
+```
+FLUSH_DB="yes"
+./electrumx-docker-btx.sh
+```
+
+
 # ElectrumX Server Docker Solution for Bitsend
 
 Login as root, then do:
@@ -40,5 +48,12 @@ Login as root, then do:
 ```
 wget https://raw.githubusercontent.com/LIMXTEC/electrumx/master/docker/electrumx-docker-bsd.sh
 chmod +x electrumx-docker-bsd.sh
+./electrumx-docker-bsd.sh
+```
+
+## Run script to flush DB (flush_count overflow)
+Edit electrumx-docker-bsd.sh and set `FLUSH_DB` to `yes` before running it
+```
+FLUSH_DB="yes"
 ./electrumx-docker-bsd.sh
 ```
